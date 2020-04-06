@@ -1,0 +1,13 @@
+//index.js
+/config
+    /database.js
+    /routes.js
+/app
+    /controllers
+        /notescontroller.js
+        /categoriescontroller.js
+    /models
+        /note.js
+        /category.js
+    /middlewares
+/node_modules
