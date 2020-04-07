@@ -23,3 +23,16 @@ module.exports.show=(req,res)=>{
     })
     .catch(err=>res.json(err))
 }
+
+module.exports.destroy=(req,res)=>{
+    const id=req.params.id
+    Category.findByIdAndDelete(id)
+    .then((category)=>{
+        if(category){
+            res.json(category)
+        }else{
+            res.json({})
+        }
+    })
+    .catch((err)=>res.json(err))
+}

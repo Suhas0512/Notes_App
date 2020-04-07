@@ -1,7 +1,7 @@
 const Note=require('../models/note')
 //setup apis
 module.exports.list=(req,res)=>{
-    Note.find()
+    Note.find().populate('category')
     .then((notes)=>{
         res.json(notes)
     })

@@ -4,11 +4,11 @@ import App from './App';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import { startGetNotes } from './actions/notesAction';
-import { startGetCategories } from './actions/categoriesAction';
+import { startGetCategory } from './actions/categoriesAction';
 const store = configureStore()
 
 store.dispatch(startGetNotes())
-store.dispatch(startGetCategories())
+store.dispatch(startGetCategory())
 
 const jsx=<Provider store={store}>
     <App/>

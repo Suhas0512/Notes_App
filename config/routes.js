@@ -11,4 +11,5 @@ router.delete('/notes/:id',notesController.destroy)
 router.get('/categories',categoriesController.list)
 router.get('/categories/:id',categoriesController.show)
 router.post('/categories',categoriesController.create)
+router.delete('/categories/:id',categoriesController.destroy)
 module.exports=router

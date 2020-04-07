@@ -1,81 +1,69 @@
-import axios from "axios";
+import axios from 'axios'
 
-export const getNotes = notes => {
-  return {
-    type: "GET_NOTES",
-    payload: notes
-  };
-};
+export const getNotes = (notes) => {
+    return {type : 'GET_NOTES',payload:notes}
+}
+
 export const startGetNotes = () => {
-  return dispatch => {
-    axios
-      .get("http://localhost:3040/notes")
-      .then(response => {
-        const notes = response.data;
-        dispatch(getNotes(notes));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-};
-export const addNote = note => {
-  return {
-    type: "ADD_NOTES",
-    payload: note
-  };
-};
+    return(dispatch)=>{
+        axios.get('http://localhost:3040/notes')
+            .then((res)=>{
+                dispatch(getNotes(res.data))
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    }
+}
 
-export const startAddNotes = notes => {
-  return dispatch => {
-    axios
-      .post(`http://localhost:3040/notes`, notes)
-      .then(response => {
-        const note = response.data;
-        dispatch(addNote(note));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-};
-export const editNotes = note => {
-  return {
-    type: "EDIT_NOTES",
-    payload: note
-  };
-};
-export const startEditNotes = (id, formData) => {
-  return dispatch => {
-    axios
-      .put(`http://localhost:3040/notes/${id}`, formData)
-      .then(response => {
-        const note = response.data;
-        console.log(note);
-        dispatch(editNotes(note));
-        window.location.reload()
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-};
-export const deleteNote = note => {
-  return {
-    type: "DELETE_NOTE",
-    payload: note
-  };
-};
-export const startDeleteNote = id => {
-  return dispatch => {
-    axios
-      .delete(`http://localhost:3040/notes/${id}`)
-      .then(response => {
-        const note = response.data;
-        dispatch(deleteNote(note));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-};
+export const addNotes = (notes) =>{
+    return {type : 'ADD_NOTES' ,payload:notes}
+}
+
+export const startAddNotes = (formData) => {
+    return(dispatch)=>{
+        axios.post('http://localhost:3040/notes',formData)
+            .then((res)=>{
+                console.log(res.data)
+                dispatch(startGetNotes())
+                dispatch(addNotes(res.data.note))
+                
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    }
+} 
+
+export const removeNotes = (note) => {
+    return {type : 'REMOVE_NOTES',payload:note}
+}
+
+export const startRemoveNotes = (id) => {
+    return(dispatch)=>{
+        axios.delete(`http://localhost:3040/notes/${id}`)
+            .then((note)=>{
+                dispatch(removeNotes(note.data))
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    }
+}
+
+export const updateNotes = (note) => {
+    return {type:'UPDATE_NOTES',payload:note}
+}
+
+export const startUpdateNote = (obj) => {
+    return(dispatch)=>{
+        axios.put(`http://localhost:3040/notes/${obj.id}`,obj.formData)
+            .then((note)=>{
+                dispatch(updateNotes(note.data))
+                window.location.href='/notes'
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+}
