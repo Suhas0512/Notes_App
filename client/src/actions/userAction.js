@@ -1,6 +1,5 @@
 import axios from "axios"
 
-
 export const startRegisterUser = (obj) => {
     return(dispatch)=>{
         axios.post('http://localhost:3040/users/register',obj.formData)
@@ -25,11 +24,11 @@ export const addUser =(user) => {
     return {type : 'ADD_USER' , payload : user}
 }
 
-export const startLoggedIn = (authToken) => {
+export const startLoggedIn = (token) => {
     return(dispatch)=>{
     axios.get('http://localhost:3040/users/account',{
         headers : {
-            'x-auth' : authToken
+            'x-auth' : token
         }
     })
     .then((response)=>{
@@ -49,10 +48,10 @@ export const startLoginUser = (obj) => {
             .then((response)=>{
                 const token = response.data.token
                 if(token){
-                    localStorage.setItem('authToken',token)
+                    localStorage.setItem('token',token)
                     axios.get('http://localhost:3040/users/account',{
                         headers :{ 
-                            'x-auth' : localStorage.getItem('authToken')}
+                            'x-auth' : localStorage.getItem('token')}
                     })
                     .then((response)=>{
                         if(response.data._id){
@@ -76,12 +75,12 @@ export const startLogoutData = () =>{
     return(dispatch)=>{
         axios.delete('http://localhost:3040/users/logout',{
             headers : {
-                'x-auth' : localStorage.getItem('authToken')
+                'x-auth' : localStorage.getItem('token')
             }
         })
             .then((response)=>{
                 alert('successfully logged out')
-                localStorage.removeItem('authToken')
+                localStorage.removeItem('token')
                 window.location.href = '/login'
             })
     }

@@ -1,14 +1,13 @@
-const intialState = {}
+const userInintial={}
 
-const userReducer = (state=intialState,action) => {
+const userReducer=(state=userInintial,action)=>{
     switch(action.type){
-        case 'ADD_USER' : {
-            return {...action.payload}
+        case 'ADD_USER':{
+            return{...action.payload}
         }
-        default : {
+        default:{
             return {...state}
         }
     }
 }
-
 export default userReducer

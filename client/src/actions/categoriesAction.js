@@ -22,11 +22,7 @@ export const addCategory = (category) => {
 
 export const startAddCategory = (formData) => {
     return(dispatch)=>{
-        axios.post('http://localhost:3040/categories',formData,{
-            headers : {
-                'x-auth' : localStorage.getItem('token')
-            }
-        })
+        axios.post('http://localhost:3040/categories',formData)
             .then((res)=>{
                 alert('category added successfully')
                 dispatch(addCategory(res.data))

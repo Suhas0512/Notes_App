@@ -11,19 +11,12 @@ function App(props) {
     return (
       <div className="App">
         <BrowserRouter>
-        {
-          Object.keys(props.user).length > 0 ?
           <div>
           <Link to ="/notes">Notes</Link>
-          <Link to ="/categories">Categories</Link></div>:
-          <div>
-          <Link to="/">Registration</Link>
-          <Link to="/login">Login</Link>
+          <Link to ="/categories">Categories</Link>
         </div>
-        }
-        <Route path="/" component={UserRegistration} exact={true}/>
-        <Route path="/login" component={UserLogin}/>
 
+        <Route path="/" component={NotesNew} exact={true}/>
         <Route path="/notes" component={Notes} exact={true} />
         <Route path="/notes/:id" component={NotesEdit} />
         <Route path="/categories" component={Category} exact={true} />
