@@ -1,87 +1,85 @@
-import axios from "axios"
+import axios from '../config/axios'
+import Swal from 'sweetalert2'
 
-export const startRegisterUser = (obj) => {
-    return(dispatch)=>{
-        axios.post('http://localhost:3040/users/register',obj.formData)
-            .then((response)=>{
-                const user = response.data
-                if(user._id){
-                alert('user registered successfully')
-                obj.redirect()
+export const startRegister=(formData,redirect)=>{
+    return()=>{
+        axios.post('/users/register',formData)
+        .then((response)=>{
+            if(response.data.hasOwnProperty('errors')){
+                const displayMessages=[]
+                for (const key in response.data.errors){
+                    displayMessages.push(response.data.errors[key].message)
                 }
-                else{
-                    alert(response.data.message)
-                }
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-            
-    }
-}
-
-export const addUser =(user) => {
-    return {type : 'ADD_USER' , payload : user}
-}
-
-export const startLoggedIn = (token) => {
-    return(dispatch)=>{
-    axios.get('http://localhost:3040/users/account',{
-        headers : {
-            'x-auth' : token
-        }
-    })
-    .then((response)=>{
-        if(response.data._id){
-            dispatch(addUser(response.data))
-        }
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-}
-}
-
-export const startLoginUser = (obj) => {
-    return(dispatch)=>{
-        axios.post('http://localhost:3040/users/login',obj.formData)
-            .then((response)=>{
-                const token = response.data.token
-                if(token){
-                    localStorage.setItem('token',token)
-                    axios.get('http://localhost:3040/users/account',{
-                        headers :{ 
-                            'x-auth' : localStorage.getItem('token')}
-                    })
-                    .then((response)=>{
-                        if(response.data._id){
-                            dispatch(addUser(response.data))
-                            alert('successfully logged in')
-                            obj.redirect()
-                        }
-                    })
-                }
-                else{
-                    alert('invalid email or password')
-                }
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-    }
-}
-
-export const startLogoutData = () =>{
-    return(dispatch)=>{
-        axios.delete('http://localhost:3040/users/logout',{
-            headers : {
-                'x-auth' : localStorage.getItem('token')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${displayMessages.join(', ')}`,
+                  })
+            }else{
+                redirect()
             }
         })
-            .then((response)=>{
-                alert('successfully logged out')
-                localStorage.removeItem('token')
-                window.location.href = '/login'
-            })
     }
 }
+
+export const setUser=(user)=>{
+    return{type:'SET_USER',payload:user}
+}
+export const startSetUser=()=>{
+    return (dispatch)=>{
+        axios.get('/users/account',{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
+        .then(response=>{
+            const user=response.data
+            dispatch(setUser(user))
+        })
+    }
+}
+
+export const startLogin=(formData,redirect)=>{
+    return(dispatch)=>{
+        axios.post('/users/login',formData)
+        .then(response=>{
+            if(response.data.hasOwnProperty('error')){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                  })
+            }else{
+                localStorage.setItem('authToken',response.data.token)
+                //redirect()
+                axios.get('/users/account',{
+                    headers:{
+                        'x-auth':localStorage.getItem('authToken')
+                    }
+                })
+                .then(response=>{
+                    const user=response.data
+                    dispatch(setUser(user))
+                    Swal.fire(
+                        'Good job!',
+                        'You are logged in',
+                        'success'
+                      )
+                    redirect()
+                })
+            }
+        })
+    }}
+    export const startLogout = (redirect) => {
+        return(dispatch)=>{
+            axios.delete('/users/logout', {
+                headers : {
+                    'x-auth' : localStorage.getItem('authToken')
+                }
+            })
+            .then((response)=>{
+                localStorage.removeItem('authToken')
+                window.location.href="/"
+            })
+        }
+    }

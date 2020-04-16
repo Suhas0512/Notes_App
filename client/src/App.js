@@ -4,24 +4,56 @@ import NotesNew from './components/Notes/New';
 import NotesEdit from './components/Notes/Edit';
 import Notes from './components/Notes/Notes';
 import Category from './components/Categories/Category';
-import UserRegistration from './components/Users/userRegistration';
 import { connect } from 'react-redux'
-import UserLogin from './components/Users/userLogin';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 function App(props) {
     return (
-      <div className="App">
         <BrowserRouter>
+        <div className="container">
+      {
+        Object.keys(props.user).length==0?(
           <div>
-          <Link to ="/notes">Notes</Link>
-          <Link to ="/categories">Categories</Link>
-        </div>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="collapse navbar-collapse" id="navbarNavDropdown">
+            <a className="navbar-brand ">Notes-App</a>
+            <ul className="navbar-nav ml-auto">
+            <li className="nav-item active">
+            <Link className="nav-link" to="/">Home</Link></li>
+            <li className="nav-item active">
+            <Link className="nav-link" to="/login">Login</Link></li>
+            <li className="nav-item active">
+            <Link className="nav-link" to="/register">Register</Link></li>
+            </ul>
+            </div>
+            </nav>
+          </div>
+        ):(
+          <div>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="collapse navbar-collapse" id="navbarNavDropdown">
+            <a className="navbar-brand">Notes App</a>
+            <ul className="navbar-nav ml-auto">
+            <li className="nav-item active">
+            <Link className="nav-link" to="">Home</Link></li>
+            <li className="nav-item active">
+            <Link className="nav-link" to="/notes">Notes</Link></li>
+            <li className="nav-item active">
+            <Link className="nav-link" to="/categories">categories</Link></li>
+            </ul>
+            </div>
+            </nav>
+          </div>
+        )
+      }
 
-        <Route path="/" component={NotesNew} exact={true}/>
+        <Route path="/register" component={Register}/>
+        <Route path="/login" component={Login}/>
         <Route path="/notes" component={Notes} exact={true} />
         <Route path="/notes/:id" component={NotesEdit} />
         <Route path="/categories" component={Category} exact={true} />
-      </BrowserRouter>
       </div>
+      </BrowserRouter>
     );
   }
   const mapStateToProps = (state) => {
