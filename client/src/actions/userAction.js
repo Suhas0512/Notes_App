@@ -43,6 +43,7 @@ export const startLogin=(formData,redirect)=>{
     return(dispatch)=>{
         axios.post('/users/login',formData)
         .then(response=>{
+            console.log(response.data)
             if(response.data.hasOwnProperty('error')){
                 Swal.fire({
                     icon: 'error',
