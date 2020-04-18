@@ -6,7 +6,11 @@ export const getNotes = (notes) => {
 
 export const startGetNotes = () => {
     return(dispatch)=>{
-        axios.get('http://localhost:3040/notes')
+        axios.get('http://localhost:3040/notes',{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((res)=>{
                 dispatch(getNotes(res.data))
             })
@@ -22,7 +26,11 @@ export const addNotes = (notes) =>{
 
 export const startAddNotes = (formData) => {
     return(dispatch)=>{
-        axios.post('http://localhost:3040/notes',formData)
+        axios.post('http://localhost:3040/notes',formData,{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((res)=>{
                 console.log(res.data)
                 dispatch(startGetNotes())
@@ -41,7 +49,11 @@ export const removeNotes = (note) => {
 
 export const startRemoveNotes = (id) => {
     return(dispatch)=>{
-        axios.delete(`http://localhost:3040/notes/${id}`)
+        axios.delete(`http://localhost:3040/notes/${id}`,{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((note)=>{
                 dispatch(removeNotes(note.data))
             })
@@ -57,7 +69,11 @@ export const updateNotes = (note) => {
 
 export const startUpdateNote = (obj) => {
     return(dispatch)=>{
-        axios.put(`http://localhost:3040/notes/${obj.id}`,obj.formData)
+        axios.put(`http://localhost:3040/notes/${obj.id}`,obj.formData,{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((note)=>{
                 dispatch(updateNotes(note.data))
                 window.location.href='/notes'

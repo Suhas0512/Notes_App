@@ -22,7 +22,7 @@ class Login extends React.Component{
             email:this.state.email
         }
         const redirect=()=>{
-            return this.props.history.push('/notes')
+            return this.props.history.push('/')
          }
         this.props.dispatch(startLogin(formData,redirect))
     }

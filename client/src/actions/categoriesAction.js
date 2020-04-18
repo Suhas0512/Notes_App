@@ -6,7 +6,11 @@ export const getCategory = (category) => {
 
 export const startGetCategory = () => {
     return(dispatch)=>{
-        axios.get('http://localhost:3040/categories')
+        axios.get('http://localhost:3040/categories',{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((res)=>{
                 dispatch(getCategory(res.data))
             })
@@ -22,7 +26,11 @@ export const addCategory = (category) => {
 
 export const startAddCategory = (formData) => {
     return(dispatch)=>{
-        axios.post('http://localhost:3040/categories',formData)
+        axios.post('http://localhost:3040/categories',formData,{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((res)=>{
                 alert('category added successfully')
                 dispatch(addCategory(res.data))
@@ -40,7 +48,11 @@ export const removeCategory = (category) => {
 
 export const startRemoveCategory = (id) => {
     return(dispatch)=>{
-        axios.delete(`http://localhost:3040/categories/${id}`)
+        axios.delete(`http://localhost:3040/categories/${id}`,{
+            headers:{
+                'x-auth':localStorage.getItem('authToken')
+            }
+        })
             .then((res)=>{
                 dispatch(removeCategory(res.data))
             })
